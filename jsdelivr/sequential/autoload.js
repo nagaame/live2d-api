@@ -24,30 +24,25 @@ function loadExternalResource(url, type) {
   });
 }
 
-// 加载 waifu.css live2d.min.js waifu-tips.js
+// 加载必要的JS文件
 if (screen.width >= 768) {
   Promise.all([
     loadExternalResource(live2d_path + 'live2d.min.js', 'js'),
-    loadExternalResource(
-      live2d_path + 'jsdelivr/sequential/waifu-tips.js',
-      'js'
-    ),
+    loadExternalResource(live2d_path + 'jsdelivr/sequential/waifu-tips.js', 'js'),
   ]).then(() => {
-    // 配置选项的具体用法见 README.md
     initWidget({
       waifuPath: live2d_path + 'waifu-tips.json',
-
-      // apiPath: "https://live2d.fghrsh.net/api/",
       cdnPath: live2d_path,
-
+      
+      // 指定加载特定模型
+      modelPath: 'AS02/as02.model3.json', // 指定模型配置文件路径
+      
       tools: [
         'hitokoto',
-        'asteroids',
-        'switch-model',
         'switch-texture',
         'photo',
         'info',
-        'quit',
+        'quit'
       ],
     });
   });
