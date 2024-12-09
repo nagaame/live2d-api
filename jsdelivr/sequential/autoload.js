@@ -2,18 +2,18 @@
 // const live2d_path =
 //   "https://fastly.jsdelivr.net/gh/nagaame/live2d-widget@latest/";
 
-const live2d_path = 'https://cdn.jsdelivr.net/gh/nagaame/live2d-api@latest/';
+const live2d_path = "https://cdn.jsdelivr.net/gh/nagaame/live2d-api@latest/";
 
 // 封装异步加载资源的方法
 function loadExternalResource(url, type) {
   return new Promise((resolve, reject) => {
     let tag;
-    if (type === 'css') {
-      tag = document.createElement('link');
-      tag.rel = 'stylesheet';
+    if (type === "css") {
+      tag = document.createElement("link");
+      tag.rel = "stylesheet";
       tag.href = url;
-    } else if (type === 'js') {
-      tag = document.createElement('script');
+    } else if (type === "js") {
+      tag = document.createElement("script");
       tag.src = url;
     }
     if (tag) {
@@ -24,33 +24,55 @@ function loadExternalResource(url, type) {
   });
 }
 
-// 加载 waifu.css live2d.min.js waifu-tips.js
+// Cubism SDK 依赖项
+const cubismCorePath =
+  "https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js";
+const frameworkPath =
+  "https://cdn.jsdelivr.net/gh/Live2D/CubismWebFramework@latest/dist/live2dcubismframework.min.js";
+const rendererPath =
+  "https://cdn.jsdelivr.net/gh/Live2D/CubismWebFramework@latest/dist/live2dcubismrenderer.min.js";
+
 if (screen.width >= 768) {
+  // 首先加载 Cubism SDK 核心库
   Promise.all([
-    loadExternalResource(live2d_path + 'live2d.min.js', 'js'),
+    loadExternalResource(cubismCorePath, "js"),
+    loadExternalResource(frameworkPath, "js"),
+    loadExternalResource(rendererPath, "js"),
     loadExternalResource(
-      live2d_path + 'jsdelivr/sequential/waifu-tips.js',
-      'js'
+      live2d_path + "jsdelivr/sequential/waifu-tips.js",
+      "js",
     ),
-  ]).then(() => {
-    // 配置选项的具体用法见 README.md
-    initWidget({
-      waifuPath: live2d_path + 'waifu-tips.json',
+  ])
+    .then(() => {
+      // 初始化 Cubism SDK
+      Live2DCubismCore.startUp();
 
-      // apiPath: "https://live2d.fghrsh.net/api/",
-      cdnPath: live2d_path,
-
-      tools: [
-        'hitokoto',
-        // 'asteroids',
-        'switch-model',
-        'switch-texture',
-        'photo',
-        'info',
-        'quit',
-      ],
+      // 初始化 widget
+      initWidget({
+        waifuPath: live2d_path + "waifu-tips.json",
+        cdnPath: live2d_path,
+        modelPath: "AS02/as02.model3.json", // 指定Cubism 3.0模型
+        tools: [
+          "hitokoto",
+          "switch-model",
+          "switch-texture",
+          "photo",
+          "info",
+          "quit",
+        ],
+        // 渲染设置
+        settings: {
+          version: 3, // 指定使用Cubism 3.0
+          width: 800,
+          height: 800,
+          scale: 1,
+          position: "right",
+        },
+      });
+    })
+    .catch((err) => {
+      console.error("Failed to load Live2D components:", err);
     });
-  });
 }
 
 console.log(`
