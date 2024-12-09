@@ -28,16 +28,13 @@ function loadExternalResource(url, type) {
 const cubismCorePath =
   "https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js";
 const frameworkPath =
-  "https://cdn.jsdelivr.net/gh/Live2D/CubismWebFramework@latest/dist/live2dcubismframework.min.js";
-const rendererPath =
-  "https://cdn.jsdelivr.net/gh/Live2D/CubismWebFramework@latest/dist/live2dcubismrenderer.min.js";
+  "https://cdn.jsdelivr.net/npm/x-live2d@1.0.5/bundle.min.js";
 
 if (screen.width >= 768) {
   // 首先加载 Cubism SDK 核心库
   Promise.all([
     loadExternalResource(cubismCorePath, "js"),
     loadExternalResource(frameworkPath, "js"),
-    loadExternalResource(rendererPath, "js"),
     loadExternalResource(
       live2d_path + "jsdelivr/sequential/waifu-tips.js",
       "js",
