@@ -1,8 +1,8 @@
 // 注意：live2d_path 参数应使用绝对路径
 // const live2d_path =
-//   "https://fastly.jsdelivr.net/gh/nagaame/live2d-widget@latest/";
+//   "https://live2d.kuokuo.io/";
 
-const live2d_path = "https://code.kuokuo.io/live2d-api/";
+const live2d_path = "https://live2d.kuokuo.io/";
 
 // 封装异步加载资源的方法
 function loadExternalResource(url, type) {
